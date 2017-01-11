@@ -22,5 +22,16 @@ class CurrencyTest < Minitest::Test
 
     assert_equal(a + b, 50)
     refute_equal(a + c, 30)
+    assert_nil(a + c)
+  end
+
+  def test_subtract_currency
+    a = Currency.new(amount: 50, code: 'GBP')
+    b = Currency.new(amount: 50, code: 'AUD')
+    c = Currency.new(amount: 25, code: 'GBP')
+
+    assert_equal(a - c, 25)
+    refute_equal(a - b, 0)
+    assert_nil(a - b)
   end
 end
