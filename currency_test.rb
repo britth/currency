@@ -16,10 +16,11 @@ class CurrencyTest < Minitest::Test
   end
 
   def test_add_currency
-    a = Currency.new(amount: 22, code: 'USD')
+    a = Currency.new(amount: 25, code: 'USD')
     b = Currency.new(amount: 25, code: 'USD')
+    c = Currency.new(amount: 5, code: 'EUR')
 
-    assert_equal(a + b, 47)
-    #assert_equal( 1+5, 2)
+    assert_equal(a + b, 50)
+    refute_equal(a + c, 30)
   end
 end
