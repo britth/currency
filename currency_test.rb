@@ -14,4 +14,12 @@ class CurrencyTest < Minitest::Test
     c = Currency.new(amount: 34, code: 'EUR')
     refute a == c
   end
+
+  def test_add_currency
+    a = Currency.new(amount: 22, code: 'USD')
+    b = Currency.new(amount: 25, code: 'USD')
+
+    assert_equal(a + b, 47)
+    #assert_equal( 1+5, 2)
+  end
 end

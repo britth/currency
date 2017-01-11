@@ -8,4 +8,8 @@ class Currency
   def ==(other)
     @amount == other.amount && @code == other.code
   end
+
+  def +(other)
+    @amount + other.amount
+  end
 end
