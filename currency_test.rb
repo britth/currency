@@ -21,8 +21,15 @@ class CurrencyTest < Minitest::Test
     c = Currency.new(amount: 5, code: 'EUR')
 
     assert_equal(a + b, 50)
-    refute_equal(a + c, 30)
-    assert_nil(a + c)
+
+    #assert_raise (DifferentCurrencyCodeError.new("Currency codes do not match")){a+c}
+
+    # exception = assert_raises(DifferentCurrencyCodeError) {a+b}
+    # assert_equal("Currency codes do not match", exception.message)
+
+    assert_raises(DifferentCurrencyCodeError, "Currency codes do not match") do
+      a+c
+    end
   end
 
   def test_subtract_currency
@@ -31,7 +38,8 @@ class CurrencyTest < Minitest::Test
     c = Currency.new(amount: 25, code: 'GBP')
 
     assert_equal(a - c, 25)
-    refute_equal(a - b, 0)
-    assert_nil(a - b)
+    assert_raises(DifferentCurrencyCodeError, "Currency codes do not match") do
+      a+b
+    end
   end
 end

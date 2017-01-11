@@ -1,4 +1,10 @@
+require './errors.rb'
+
 class Currency
+  # class DifferentCurrencyCodeError < StandardError
+  # end
+
+
   attr_reader :amount, :code
   def initialize(amount:, code:)
     @amount = amount
@@ -12,12 +18,16 @@ class Currency
   def +(other)
     if @code == other.code
       @amount + other.amount
+    else
+      raise DifferentCurrencyCodeError, "Currency codes do not match"
     end
   end
 
   def -(other)
     if @code == other.code
       @amount - other.amount
+    else
+      raise DifferentCurrencyCodeError, "Currency codes do not match"
     end
   end
 end
