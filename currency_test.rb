@@ -42,4 +42,15 @@ class CurrencyTest < Minitest::Test
       a+b
     end
   end
+
+  def test_can_multiply_by_float_or_fixnum
+    a = Currency.new(amount: 5, code: 'NZD')
+    b = a.amount
+    c = a * 5
+    assert_equal(a, c)
+    refute_equal(a.amount, b)
+    assert_raises(NotAFloatOrFixnumError, "You must pass a float or a fixnum") do
+      a*'hello'
+    end
+  end
 end
