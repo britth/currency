@@ -1,4 +1,5 @@
-require './currency.rb'
+#require './currency.rb'
+require './currency_converter.rb'
 require 'minitest/pride'
 require 'minitest/autorun'
 
@@ -59,5 +60,18 @@ class CurrencyTest < Minitest::Test
     assert_raises(NoKnownCurrencyError, "Currency code is unknown") do
       c.get_code
     end
-   end
+  end
+
+  def test_converter_object_can_take_hash
+    a = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74})
+
+    assert_equal(a.codes_to_rates, {USD: 1.0, EUR: 0.74})
+  end
+
+  def test_convert_currency_object_to_same_code
+    a = Currency.new(amount: 10, code: 'USD')
+    b = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74})
+    assert_equal(a.amount, b.convert(a, :EUR))
+  end
+
 end

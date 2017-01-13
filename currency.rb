@@ -1,8 +1,6 @@
 require './errors.rb'
 
 class Currency
-  # class DifferentCurrencyCodeError < StandardError
-  # end
   @@symbol_to_code = {'$' => 'USD', '€' => 'EUR'}
   #attr_reader :amount, :code
   attr_accessor :amount, :code
