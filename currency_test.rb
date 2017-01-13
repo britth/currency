@@ -89,4 +89,19 @@ class CurrencyTest < Minitest::Test
     assert(a.codes_to_rates, {USD: 1.0, EUR: 0.74, JPY: 120.0})
   end
 
+  def test_currency_converter_can_convert_in_any_code_it_knows
+    a = Currency.new(amount: '$1.00')
+    b = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74, JPY: 120.0})
+    c = b.convert(a, :EUR)
+    d = b.convert(a, :JPY)
+    e = Currency.new(amount: 0.74, code: :EUR)
+    f = Currency.new(amount: 120, code: :JPY)
+
+    assert_equal(c.amount, a.amount * 0.74)
+    assert_equal(d.amount, a.amount * 120.0)
+    assert_equal(c, e)
+    assert_equal(d, f)
+
+  end
+
 end
