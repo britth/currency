@@ -19,14 +19,7 @@ class CurrencyTest < Minitest::Test
     a = Currency.new(amount: 25, code: 'USD')
     b = Currency.new(amount: 25, code: 'USD')
     c = Currency.new(amount: 5, code: 'EUR')
-
     assert_equal(a + b, 50)
-
-    #assert_raise (DifferentCurrencyCodeError.new("Currency codes do not match")){a+c}
-
-    # exception = assert_raises(DifferentCurrencyCodeError) {a+b}
-    # assert_equal("Currency codes do not match", exception.message)
-
     assert_raises(DifferentCurrencyCodeError, "Currency codes do not match") do
       a+c
     end
@@ -53,4 +46,18 @@ class CurrencyTest < Minitest::Test
       a*'hello'
     end
   end
+
+  def test_understanding_symbols
+    a = Currency.new(amount: "$5.00")
+    b = Currency.new(amount: 10.00, code: 'AUD')
+    c = Currency.new(amount: "₹44")
+    assert_equal(a.amount, 5)
+    assert_equal(a.code, 'USD')
+    assert_equal(b.amount, 10)
+    assert_equal(b.code, 'AUD')
+    assert_nil(c.code)
+    assert_raises(NoKnownCurrencyError, "Currency code is unknown") do
+      c.get_code
+    end
+   end
 end

@@ -3,3 +3,6 @@ end
 
 class NotAFloatOrFixnumError < StandardError
 end
+
+class NoKnownCurrencyError < StandardError
+end
