@@ -14,7 +14,7 @@ class CurrencyConverter
   end
 
   def convert(currency, code)
-    currency.amount * codes_to_rates[code]
+    currency = Currency.new(amount: (currency.amount * codes_to_rates[code]), code: code)
   end
 
 end

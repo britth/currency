@@ -69,9 +69,9 @@ class CurrencyTest < Minitest::Test
   end
 
   def test_convert_currency_object_to_same_code
-    a = Currency.new(amount: 10, code: 'USD')
+    a = Currency.new(amount: 10.00, code: :USD)
     b = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74})
-    assert_equal(a.amount, b.convert(a, :EUR))
+    assert_equal(a, b.convert(a, :USD))
   end
 
 end
