@@ -40,7 +40,7 @@ class Currency
 
   def get_code
     if @code.nil?
-      raise NoKnownCurrencyError, "Currency code is unknown"
+      raise UnknownCurrencyCodeError, "Currency code is unknown"
     else
       @code
     end

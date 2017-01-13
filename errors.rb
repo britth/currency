@@ -4,5 +4,5 @@ end
 class NotAFloatOrFixnumError < StandardError
 end
 
-class NoKnownCurrencyError < StandardError
+class UnknownCurrencyCodeError < StandardError
 end

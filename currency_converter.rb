@@ -14,7 +14,11 @@ class CurrencyConverter
   end
 
   def convert(currency, code)
-    currency = Currency.new(amount: (currency.amount * codes_to_rates[code]), code: code)
+    if codes_to_rates[code].nil? || currency.code.nil?
+      raise UnknownCurrencyCodeError, "Currency code is unknown"
+    else
+      currency = Currency.new(amount: (currency.amount * codes_to_rates[code]), code: code)
+    end
   end
 
 end

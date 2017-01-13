@@ -57,7 +57,7 @@ class CurrencyTest < Minitest::Test
     assert_equal(b.amount, 10)
     assert_equal(b.code, 'AUD')
     assert_nil(c.code)
-    assert_raises(NoKnownCurrencyError, "Currency code is unknown") do
+    assert_raises(UnknownCurrencyCodeError, "Currency code is unknown") do
       c.get_code
     end
   end
@@ -102,6 +102,15 @@ class CurrencyTest < Minitest::Test
     assert_equal(c, e)
     assert_equal(d, f)
 
+  end
+
+  def test_currency_coverter_throws_error_for_unknown_code
+    a = Currency.new(amount: '$1.00')
+    b = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74, JPY: 120.0})
+
+    assert_raises(UnknownCurrencyCodeError, "Currency code is unknown") do
+      b.convert(a, :GBP)
+    end
   end
 
 end
