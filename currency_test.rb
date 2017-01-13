@@ -83,4 +83,10 @@ class CurrencyTest < Minitest::Test
     assert_equal(c.code, :EUR)
   end
 
+  def test_currency_converter_can_take_hash_of_three
+    a = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74, JPY: 120.0})
+    refute_nil(a)
+    assert(a.codes_to_rates, {USD: 1.0, EUR: 0.74, JPY: 120.0})
+  end
+
 end
