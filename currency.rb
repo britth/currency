@@ -2,12 +2,8 @@ require './errors.rb'
 
 class Currency
   @@symbol_to_code = {'$' => :USD, '€' => :USD}
-  #attr_reader :amount, :code
   attr_accessor :amount, :code
-  #def initialize(amount:, code:)
   def initialize(params = {})
-    #@amount = amount
-    #@code = code
     @amount = params.fetch(:amount, amount)
     @code = params.fetch(:code, code)
   end
@@ -45,10 +41,6 @@ class Currency
       @code
     end
   end
-
-  # def find_code(symbol)
-  #   symbol_to_code(symbol)
-  # end
 
   def ==(other)
     @amount == other.amount && @code == other.code
