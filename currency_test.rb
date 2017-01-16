@@ -1,25 +1,24 @@
-#require './currency.rb'
-require './currency_converter.rb'
+require './currency_trader.rb'
 require 'minitest/pride'
 require 'minitest/autorun'
 
 class CurrencyTest < Minitest::Test
   def test_currency_creation
-    Currency.new(amount: 34, code: 'USD')
+    Currency.new(amount: 34, code: :USD)
   end
 
   def test_equal_currencies
-    a = Currency.new(amount: 34, code: 'USD')
-    b = Currency.new(amount: 34, code: 'USD')
+    a = Currency.new(amount: 34, code: :USD)
+    b = Currency.new(amount: 34, code: :USD)
     assert a == b
-    c = Currency.new(amount: 34, code: 'EUR')
+    c = Currency.new(amount: 34, code: :EUR)
     refute a == c
   end
 
   def test_add_currency
-    a = Currency.new(amount: 25, code: 'USD')
-    b = Currency.new(amount: 25, code: 'USD')
-    c = Currency.new(amount: 5, code: 'EUR')
+    a = Currency.new(amount: 25, code: :USD)
+    b = Currency.new(amount: 25, code: :USD)
+    c = Currency.new(amount: 5, code: :EUR)
     assert_equal(a + b, 50)
     assert_raises(DifferentCurrencyCodeError, "Currency codes do not match") do
       a+c
@@ -27,9 +26,9 @@ class CurrencyTest < Minitest::Test
   end
 
   def test_subtract_currency
-    a = Currency.new(amount: 50, code: 'GBP')
-    b = Currency.new(amount: 50, code: 'AUD')
-    c = Currency.new(amount: 25, code: 'GBP')
+    a = Currency.new(amount: 50, code: :GBP)
+    b = Currency.new(amount: 50, code: :AUD)
+    c = Currency.new(amount: 25, code: :GBP)
 
     assert_equal(a - c, 25)
     assert_raises(DifferentCurrencyCodeError, "Currency codes do not match") do
@@ -38,7 +37,7 @@ class CurrencyTest < Minitest::Test
   end
 
   def test_can_multiply_by_float_or_fixnum
-    a = Currency.new(amount: 5, code: 'NZD')
+    a = Currency.new(amount: 5, code: :NZD)
     b = a.amount
     c = a * 5
     assert_equal(a, c)
@@ -50,12 +49,12 @@ class CurrencyTest < Minitest::Test
 
   def test_understanding_symbols
     a = Currency.new(amount: "$5.00")
-    b = Currency.new(amount: 10.00, code: 'AUD')
+    b = Currency.new(amount: 10.00, code: :AUD)
     c = Currency.new(amount: "₹44")
     assert_equal(a.amount, 5)
-    assert_equal(a.code, 'USD')
+    assert_equal(a.code, :USD)
     assert_equal(b.amount, 10)
-    assert_equal(b.code, 'AUD')
+    assert_equal(b.code, :AUD)
     assert_nil(c.code)
     assert_raises(UnknownCurrencyCodeError, "Currency code is unknown") do
       c.get_code
@@ -111,6 +110,25 @@ class CurrencyTest < Minitest::Test
     assert_raises(UnknownCurrencyCodeError, "Currency code is unknown") do
       b.convert(a, :GBP)
     end
+  end
+
+  def test_currency_trader_returns_best_trade
+    a = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74, JPY: 120.0})
+    b = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.68, JPY: 113.0})
+    c = Currency.new(amount: 25, code: :USD)
+
+    d = CurrencyTrader.new(cc_one: a, cc_two: b, currency: c)
+    eur_final = ((0.74 * 25) / 0.68)
+    jpy_final = ((120 * 25) / 113)
+    assert(eur_final > jpy_final)
+    assert_equal(d.best_investment, :EUR)
+
+    e = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.74, JPY: 120.0})
+    f = CurrencyConverter.new(codes_to_rates: {USD: 1.0, EUR: 0.75, JPY: 113.0})
+    g = CurrencyTrader.new(cc_one: e, cc_two: f, currency: c)
+    assert_equal(a.codes_to_rates, e.codes_to_rates) #i'm doing something that causes the actual converter objects to change, test that
+    assert_equal(g.best_investment, :JPY)
+
   end
 
 end
