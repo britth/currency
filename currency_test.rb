@@ -32,7 +32,7 @@ class CurrencyTest < Minitest::Test
 
     assert_equal(a - c, 25)
     assert_raises(DifferentCurrencyCodeError, "Currency codes do not match") do
-      a+b
+      a-b
     end
   end
 
