@@ -3,7 +3,6 @@ require './currency.rb'
 class CurrencyConverter
   attr_accessor :codes_to_rates
   def initialize(params = {})
-
     @codes_to_rates = params.fetch(:codes_to_rates, codes_to_rates)
   end
 

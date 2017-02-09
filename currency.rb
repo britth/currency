@@ -1,7 +1,7 @@
 require './errors.rb'
 
 class Currency
-  @@symbol_to_code = {'$' => :USD, '€' => :USD}
+  @@symbol_to_code = {'$' => :USD, '€' => :EUR}
   attr_accessor :amount, :code
   def initialize(params = {})
     @amount = params.fetch(:amount, amount)
